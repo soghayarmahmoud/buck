@@ -3,7 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:buck/components/usage_service.dart';
 
 class StatisticsPage extends StatefulWidget {
-  const StatisticsPage({Key? key}) : super(key: key);
+  const StatisticsPage({super.key});
 
   @override
   State<StatisticsPage> createState() => _StatisticsPageState();

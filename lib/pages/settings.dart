@@ -1,6 +1,5 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use, use_build_context_synchronously, unused_label
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:buck/components/custom_appbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,7 +8,6 @@ import 'package:buck/themes/theme_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
