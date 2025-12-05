@@ -11,42 +11,53 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  // Use a TickerProvider to manage the animation controller
-  late AnimationController _controller;
-  // Use an Animation for the scaling effect of the logo
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
+  late AnimationController _scaleController;
+  late AnimationController _rotateController;
+  late AnimationController _fadeController;
   late Animation<double> _scaleAnimation;
-  // Use a double for the opacity to create a fade-in effect
-  double _opacity = 0.0;
+  late Animation<double> _rotateAnimation;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize the animation controller
-    _controller = AnimationController(
+    // Scale animation for logo
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _scaleAnimation = Tween<double>(begin: 0.3, end: 1.0).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut),
+    );
+
+    // Rotation animation for background
+    _rotateController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat();
+    _rotateAnimation = Tween<double>(begin: 0.0, end: 2 * 3.14159).animate(
+      CurvedAnimation(parent: _rotateController, curve: Curves.linear),
+    );
+
+    // Fade animation for text
+    _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     );
-
-    // Initialize the scaling animation
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOut,
-      ),
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
     );
 
-    // Start the fade-in and scaling animations
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _opacity = 1.0;
-      });
-      _controller.forward();
+    // Start animations
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _scaleController.forward();
+      _fadeController.forward();
     });
 
-    // Navigate to the next screen after a delay
-    // This simulates the time needed for the app to initialize
+    // Navigate after splash duration
     Timer(const Duration(seconds: 4), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
@@ -60,7 +71,9 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   void dispose() {
-    _controller.dispose();
+    _scaleController.dispose();
+    _rotateController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -68,77 +81,153 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // Add a gradient background for a modern look
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              const Color.fromARGB(255, 0, 62, 197),
-              const Color.fromARGB(255, 86, 193, 255),
+              const Color(0xFF00695C),
+              const Color(0xFF00BFA5),
             ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Use AnimatedOpacity for a fade-in effect
-              AnimatedOpacity(
-                opacity: _opacity,
-                duration: const Duration(seconds: 1),
-                child: ScaleTransition(
-                  
-                  scale: _scaleAnimation,
-                
-                  child: CircleAvatar(
-                    radius: 100,
-                    backgroundImage: AssetImage(
-                      // You must add your image to the assets folder and pubspec.yaml
-                      'assets/images/logo.png',
-                      
-                    ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Animated background circles
+            Positioned(
+              top: 40,
+              right: 20,
+              child: AnimatedBuilder(
+                animation: _rotateAnimation,
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: _rotateAnimation.value,
+                    child: child,
+                  );
+                },
+                child: Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.1),
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
-              // Use AnimatedOpacity for a delayed fade-in effect
-              AnimatedOpacity(
-                opacity: _opacity,
-                duration: const Duration(seconds: 1),
+            ),
+            Positioned(
+              bottom: 60,
+              left: 30,
+              child: AnimatedBuilder(
+                animation: _rotateAnimation,
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: -_rotateAnimation.value,
+                    child: child,
+                  );
+                },
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.08),
+                  ),
+                ),
+              ),
+            ),
+            // Main content
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Logo with scale animation
+                ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF00695C).withOpacity(0.4),
+                          blurRadius: 30,
+                          spreadRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/logo.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 40),
+                // App name with fade animation
+                FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: Column(
+                    children: [
+                      Text(
+                        'البخاري',
+                        style: TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: const Offset(0, 4),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'صحيح البخاري',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white.withOpacity(0.9),
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            // Loading indicator at bottom
+            Positioned(
+              bottom: 40,
+              child: FadeTransition(
+                opacity: _fadeAnimation,
                 child: Column(
                   children: [
-                    Text(
-                      'صحيح البخاري',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        // Add a slight shadow for a creative touch
-                        shadows: [
-                          Shadow(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                            blurRadius: 10,
-                            offset: const Offset(2, 2),
-                          ),
-                        ],
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white.withOpacity(0.8),
+                        ),
+                        strokeWidth: 3,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'لمن أراد الهدي.. ومنبع العلم.. ودليل المسلمين',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
-                      ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -28,7 +28,7 @@
 //         ),
 //       ),
 //       centerTitle: true,
-      
+
 //       leading: hasBackButton
 //           ? IconButton(
 //               icon: Icon(
@@ -38,7 +38,7 @@
 //               onPressed: () => Navigator.of(context).pop(),
 //             )
 //           : null,
-      
+
 //       actions: [
 //         PopupMenuButton<String>(
 //           icon: Icon(
@@ -135,8 +135,8 @@
 //   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 // }
 import 'package:flutter/material.dart';
-import 'package:buck/themes/theme_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:buck/pages/settings.dart';
+import 'package:buck/pages/statistics_page.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -151,38 +151,105 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      Size.fromHeight(kToolbarHeight + (hasSearch ? kToolbarHeight : 0));
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: Colors.white,
+          letterSpacing: 0.5,
+        ),
         textDirection: TextDirection.rtl,
-        
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: isDark
+          ? const Color(0xFF1A2139)
+          : const Color(0xFF00695C),
       centerTitle: true,
+      elevation: 8,
+      shadowColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
       actions: [
-        IconButton(
-          onPressed: () {
-            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-          },
+        PopupMenuButton<String>(
           icon: Icon(
-            Provider.of<ThemeProvider>(context).isDarkMode
-                ? Icons.light_mode
-                : Icons.dark_mode,
+            Icons.menu,
+            color: isDark
+                ? Theme.of(context).colorScheme.primary
+                : Colors.black,
           ),
+          onSelected: (String result) {
+            if (result == 'settings') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            } else if (result == 'statistics') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const StatisticsPage()),
+              );
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'settings',
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.settings,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'الإعدادات',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16,
+                    ),
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuItem<String>(
+              value: 'statistics',
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.bar_chart,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'الإحصائيات',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16,
+                    ),
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
       bottom: hasSearch
           ? PreferredSize(
               preferredSize: const Size.fromHeight(kToolbarHeight),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: TextField(
                   controller: searchController,
+                  textDirection: TextDirection.rtl,
                   decoration: InputDecoration(
                     hintText: 'ابحث عن حديث...',
                     prefixIcon: const Icon(Icons.search),

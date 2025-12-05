@@ -100,7 +100,6 @@ class UsageService {
     return streak;
   }
 
-
   static Future<void> saveDailySeconds(int seconds) async {
     final prefs = await SharedPreferences.getInstance();
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -114,6 +113,29 @@ class UsageService {
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     final todayKey = "daily_$today";
     return prefs.getInt(todayKey) ?? 0;
+  }
+
+  /// Get daily seconds for a specific date (yyyy-MM-dd)
+  static Future<int> getDailySecondsForDate(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = DateFormat('yyyy-MM-dd').format(date);
+    return prefs.getInt('daily_$key') ?? 0;
+  }
+
+  /// Get last N days (date -> seconds) with today included. Returns map with DateTime keys.
+  static Future<Map<DateTime, int>> getLastNDays(int n) async {
+    final Map<DateTime, int> data = {};
+    final now = DateTime.now();
+    for (int i = 0; i < n; i++) {
+      final d = DateTime(
+        now.year,
+        now.month,
+        now.day,
+      ).subtract(Duration(days: i));
+      final seconds = await getDailySecondsForDate(d);
+      data[d] = seconds;
+    }
+    return data;
   }
 
   /// حفظ الوقت الكلي (بالثواني)

@@ -18,8 +18,8 @@ class CustomBottomNavigationBar extends StatefulWidget {
       _CustomBottomNavigationBarState();
 }
 
-class _CustomBottomNavigationBarState
-    extends State<CustomBottomNavigationBar> with TickerProviderStateMixin {
+class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
+    with TickerProviderStateMixin {
   int _selectedIndex = 0;
   late final PageController _pageController;
   late final List<AnimationController> _animationControllers;
@@ -47,9 +47,10 @@ class _CustomBottomNavigationBarState
     );
 
     _animations = _animationControllers.map((controller) {
-      return Tween<double>(begin: 1.0, end: 1.2).animate(
-        CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-      );
+      return Tween<double>(
+        begin: 1.0,
+        end: 1.2,
+      ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
     }).toList();
 
     // Start first animation
@@ -108,11 +109,11 @@ class _CustomBottomNavigationBarState
       bottomNavigationBar: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.grey[900] : Colors.white,
+          color: isDark ? const Color(0xFF1A2139) : Colors.white,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.2),
               blurRadius: 20,
               offset: const Offset(0, 5),
             ),
@@ -123,8 +124,10 @@ class _CustomBottomNavigationBarState
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 8.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -167,10 +170,14 @@ class _CustomBottomNavigationBarState
     required String label,
     required bool isSelected,
   }) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDark = themeProvider.themeData.brightness == Brightness.dark;
+
     final color = isSelected
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6) ??
-            Colors.grey;
+        ? const Color(0xFF00BFA5)
+        : isDark
+        ? Colors.white70
+        : Colors.grey;
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -178,7 +185,9 @@ class _CustomBottomNavigationBarState
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? Theme.of(context).primaryColor.withOpacity(0.1)
+              ? (isDark
+                    ? const Color(0xFF00BFA5).withOpacity(0.15)
+                    : const Color(0xFF00695C).withOpacity(0.1))
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
@@ -198,11 +207,7 @@ class _CustomBottomNavigationBarState
             ],
             ScaleTransition(
               scale: _animations[index],
-              child: Icon(
-                icon,
-                color: color,
-                size: 22,
-              ),
+              child: Icon(icon, color: color, size: 22),
             ),
           ],
         ),
