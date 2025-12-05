@@ -1,7 +1,7 @@
 # 📘 Sahih Al-Bukhari App
 
 <div align="center">
-  <img src="https://i.imgur.com/7YH1G9a.png" alt="Banner" style="border-radius: 12px;" />
+  <img src="https://images.pexels.com/photos/14337768/pexels-photo-14337768.jpeg" alt="Banner" style="border-radius: 12px;" />
 </div>
 
 ## 🌟 Overview
@@ -93,7 +93,7 @@ This project is licensed under the **MIT License**.
 ## 💬 Contact
 
 For inquiries or collaborations, reach out at:
-**[your-email@example.com](mailto:your-email@example.com)**
+**[alsighiar@gmail.com](mailto:alsighiar@gmail.com)**
 
 ---
 
