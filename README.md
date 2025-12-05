@@ -51,7 +51,6 @@ This application provides the complete collection of **Sahih Al-Bukhari** with a
 
 ## 📲 Screenshots
 
-*(Add your app screenshots here)*
 
 ---
 
