@@ -135,8 +135,11 @@
 //   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 // }
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:buck/themes/theme_provider.dart';
 import 'package:buck/pages/settings.dart';
 import 'package:buck/pages/statistics_page.dart';
+import 'package:buck/pages/about_page.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -157,6 +160,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final themeProvider = context.watch<ThemeProvider>();
+    final primaryColor = themeProvider.primaryColor;
+
     return AppBar(
       title: Text(
         title,
@@ -168,20 +174,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         textDirection: TextDirection.rtl,
       ),
-      backgroundColor: isDark
-          ? const Color(0xFF1A2139)
-          : const Color(0xFF00695C),
+      backgroundColor: isDark ? const Color(0xFF1A2139) : primaryColor,
       centerTitle: true,
       elevation: 8,
-      shadowColor: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+      shadowColor: primaryColor.withOpacity(0.3),
       actions: [
         PopupMenuButton<String>(
-          icon: Icon(
-            Icons.menu,
-            color: isDark
-                ? Theme.of(context).colorScheme.primary
-                : Colors.black,
-          ),
+          icon: Icon(Icons.menu, color: isDark ? primaryColor : Colors.black),
           onSelected: (String result) {
             if (result == 'settings') {
               Navigator.push(
@@ -192,6 +191,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const StatisticsPage()),
+              );
+            } else if (result == 'about') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutPage()),
               );
             }
           },
@@ -227,6 +231,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const SizedBox(width: 12),
                   Text(
                     'الإحصائيات',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 16,
+                    ),
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuItem<String>(
+              value: 'about',
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'عن التطبيق',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontSize: 16,

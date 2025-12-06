@@ -9,6 +9,10 @@ import 'package:buck/themes/theme_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:buck/pages/about_page.dart';
+
+// Alias for AboutPage to distinguish it from usage in settings
+typedef AboutPageWidget = AboutPage;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -273,6 +277,143 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 12),
+                // Color scheme picker
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.color_lens,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('اختر اللون الأساسي'),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFF00695C),
+                            label: 'أزرق مخضر',
+                            scheme: 'teal',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFF1565C0),
+                            label: 'أزرق',
+                            scheme: 'blue',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFF7B1FA2),
+                            label: 'بنفسجي',
+                            scheme: 'purple',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFF2E7D32),
+                            label: 'أخضر',
+                            scheme: 'green',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFFE65100),
+                            label: 'برتقالي',
+                            scheme: 'orange',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFFC62828),
+                            label: 'أحمر',
+                            scheme: 'red',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildColorOption(
+                            context,
+                            color: const Color(0xFFC2185B),
+                            label: 'وردي',
+                            scheme: 'pink',
+                            themeProvider: themeProvider,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Font family picker
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.text_fields,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('اختر خط النص'),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          _buildFontOption(
+                            context,
+                            label: 'Cairo',
+                            fontFamily: 'cairo',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildFontOption(
+                            context,
+                            label: 'Tajawal',
+                            fontFamily: 'tajawal',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildFontOption(
+                            context,
+                            label: 'Changa',
+                            fontFamily: 'changa',
+                            themeProvider: themeProvider,
+                          ),
+                          _buildFontOption(
+                            context,
+                            label: 'Droid',
+                            fontFamily: 'droid',
+                            themeProvider: themeProvider,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -423,58 +564,19 @@ class _SettingsPageState extends State<SettingsPage> {
               icon: Icons.info_outline,
               title: 'حول التطبيق',
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(
+                _buildOptionTile(
+                  context,
+                  icon: Icons.info,
+                  title: 'عن التطبيق',
+                  subtitle: 'معلومات عن المطورين والإصدار',
+                  onTap: () {
+                    Navigator.push(
                       context,
-                    ).colorScheme.primary.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('رقم الإصدار'),
-                          Text(
-                            '1.2.1',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ],
+                      MaterialPageRoute(
+                        builder: (context) => const AboutPageWidget(),
                       ),
-                      const Divider(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('المطورون'),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Mahmoud El-Soghayar',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Ahmed Mahmoud',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 12),
                 _buildOptionTile(
@@ -716,5 +818,90 @@ class _SettingsPageState extends State<SettingsPage> {
         ).showSnackBar(const SnackBar(content: Text('فشل فتح رابط التحميل')));
       }
     }
+  }
+
+  Widget _buildColorOption(
+    BuildContext context, {
+    required Color color,
+    required String label,
+    required String scheme,
+    required ThemeProvider themeProvider,
+  }) {
+    final isSelected = themeProvider.selectedColorScheme == scheme;
+    return GestureDetector(
+      onTap: () {
+        themeProvider.setColorScheme(scheme);
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: isSelected
+                  ? Border.all(color: Colors.white, width: 3)
+                  : null,
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: color.withOpacity(0.5),
+                        blurRadius: 8,
+                        spreadRadius: 2,
+                      ),
+                    ]
+                  : null,
+            ),
+            child: isSelected
+                ? Center(
+                    child: Icon(Icons.check, color: Colors.white, size: 28),
+                  )
+                : null,
+          ),
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFontOption(
+    BuildContext context, {
+    required String label,
+    required String fontFamily,
+    required ThemeProvider themeProvider,
+  }) {
+    final isSelected = themeProvider.selectedFontFamily == fontFamily;
+    return GestureDetector(
+      onTap: () {
+        themeProvider.setFontFamily(fontFamily);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.primary,
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : null,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
   }
 }

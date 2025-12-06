@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:buck/components/bottom_navigation_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:buck/themes/theme_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -38,18 +40,20 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 3),
     )..repeat();
-    _rotateAnimation = Tween<double>(begin: 0.0, end: 2 * 3.14159).animate(
-      CurvedAnimation(parent: _rotateController, curve: Curves.linear),
-    );
+    _rotateAnimation = Tween<double>(
+      begin: 0.0,
+      end: 2 * 3.14159,
+    ).animate(CurvedAnimation(parent: _rotateController, curve: Curves.linear));
 
     // Fade animation for text
     _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
-    );
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeIn));
 
     // Start animations
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -61,9 +65,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 4), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => const CustomBottomNavigationBar(),
-          ),
+          MaterialPageRoute(builder: (_) => const CustomBottomNavigationBar()),
         );
       }
     });
@@ -79,14 +81,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final primaryColor = themeProvider.primaryColor;
+    final lightColor = primaryColor.withOpacity(0.8);
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              const Color(0xFF00695C),
-              const Color(0xFF00BFA5),
-            ],
+            colors: [primaryColor, lightColor],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

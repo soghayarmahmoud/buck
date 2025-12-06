@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:buck/models/hadith.dart';
+import 'package:buck/themes/theme_provider.dart';
 
 class ShareableHadithCard extends StatelessWidget {
   final Hadith hadith;
@@ -7,12 +9,16 @@ class ShareableHadithCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    final primaryColor = themeProvider.primaryColor;
+    final lightColor = primaryColor.withOpacity(0.8);
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF00695C).withOpacity(0.95),
-            const Color(0xFF00BFA5).withOpacity(0.85),
+            primaryColor.withOpacity(0.95),
+            lightColor.withOpacity(0.85),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -20,7 +26,7 @@ class ShareableHadithCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF00695C).withOpacity(0.3),
+            color: primaryColor.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 8),
           ),
@@ -84,10 +90,10 @@ class ShareableHadithCard extends StatelessWidget {
                 hadith.text,
                 style: TextStyle(
                   fontSize: 22,
-                  height: 1.9,
+                  height: 1.6,
                   fontWeight: FontWeight.w600,
                   color: Colors.white.withOpacity(0.95),
-                  letterSpacing: 0.5,
+                  letterSpacing: 0.4,
                 ),
                 textAlign: TextAlign.justify,
                 textDirection: TextDirection.rtl,
@@ -107,7 +113,7 @@ class ShareableHadithCard extends StatelessWidget {
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
                   color: Colors.white.withOpacity(0.7),
-                  letterSpacing: 0.3,
+                  letterSpacing: 0.2,
                 ),
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.rtl,

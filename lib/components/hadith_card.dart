@@ -216,7 +216,11 @@ class HadithCard extends StatelessWidget {
       }
 
       // تحويل الحديث لصورة
-      final File imageFile = await ImageHelper.hadithToImage(hadith.text);
+      final themeProvider = context.read<ThemeProvider>();
+      final File imageFile = await ImageHelper.hadithToImage(
+        hadith.text,
+        primaryColor: themeProvider.primaryColor,
+      );
 
       // تحديد مسار الحفظ
       final directory = Platform.isAndroid
@@ -327,7 +331,7 @@ class HadithCard extends StatelessWidget {
                 Consumer<ThemeProvider>(
                   builder: (context, themeProvider, child) {
                     return Text(
-                      '${hadith.id} - ${hadith.text}', 
+                      '${hadith.id} - ${hadith.text}',
                       style: TextStyle(
                         fontSize: themeProvider.fontSize,
                         fontWeight: themeProvider.isBold

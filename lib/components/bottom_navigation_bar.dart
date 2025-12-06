@@ -172,9 +172,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
   }) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.themeData.brightness == Brightness.dark;
+    final primaryColor = themeProvider.primaryColor;
 
     final color = isSelected
-        ? const Color(0xFF00BFA5)
+        ? primaryColor
         : isDark
         ? Colors.white70
         : Colors.grey;
@@ -185,9 +186,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? (isDark
-                    ? const Color(0xFF00BFA5).withOpacity(0.15)
-                    : const Color(0xFF00695C).withOpacity(0.1))
+              ? primaryColor.withOpacity(0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),

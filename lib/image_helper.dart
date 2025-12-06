@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageHelper {
-  static Future<File> hadithToImage(String text) async {
+  static Future<File> hadithToImage(
+    String text, {
+    Color primaryColor = const Color(0xFF00695C),
+  }) async {
     const int width = 800;
     int height = 1000; // default height
 
@@ -41,8 +44,10 @@ class ImageHelper {
 
     // 🌈 modern background with soft gradient + rounded card
     final Rect rect = Rect.fromLTWH(0, 0, width.toDouble(), height.toDouble());
+    // Create gradient using primary color and a lighter variant
+    final Color lightColor = primaryColor.withOpacity(0.8);
     final Gradient gradient = LinearGradient(
-      colors: [const Color(0xFF00695C), const Color(0xFF00BFA5)],
+      colors: [primaryColor, lightColor],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     );
