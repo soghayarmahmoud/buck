@@ -50,7 +50,16 @@ This application provides the complete collection of **Sahih Al-Bukhari** with a
 ---
 
 ## 📲 Screenshots
+<div align="center">
+  <img src="/imgs/1.jpg" alt="Screenshot 1" style="border-radius: 12px;" />
+  <img src="/imgs/2.jpg" alt="Screenshot 2" style="border-radius: 12px;" />
+  <img src="/imgs/3.jpg" alt="Screenshot 3" style="border-radius: 12px;" />
+  <img src="/imgs/4.jpg" alt="Screenshot 4" style="border-radius: 12px;" />
+  <img src="/imgs/5.jpg" alt="Screenshot 5" style="border-radius: 12px;" />
+  <img src="/imgs/6.jpg" alt="Screenshot 6" style="border-radius: 12px;" />
+  <img src="/imgs/7.jpg" alt="Screenshot 7" style="border-radius: 12px;" />
 
+</div>
 
 ---
 
