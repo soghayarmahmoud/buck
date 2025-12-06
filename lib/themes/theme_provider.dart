@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // Modern material 3 themed provider with a seeded color scheme and dynamic customization.
 
@@ -138,14 +137,14 @@ class ThemeProvider extends ChangeNotifier {
   TextStyle _getFontStyle(String fontFamily) {
     switch (fontFamily) {
       case 'tajawal':
-        return GoogleFonts.tajawal();
+        return const TextStyle(fontFamily: 'Tajawal');
       case 'changa':
-        return GoogleFonts.changa();
+        return const TextStyle(fontFamily: 'Changa');
       case 'droid':
-        return GoogleFonts.cairo();
+        return const TextStyle(fontFamily: 'Droid');
       case 'cairo':
       default:
-        return GoogleFonts.cairo();
+        return const TextStyle(fontFamily: 'Cairo');
     }
   }
 

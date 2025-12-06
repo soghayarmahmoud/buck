@@ -615,13 +615,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildSocialButton(
-                      Icons.facebook,
-                      () => _launchUrl(
-                        'https://web.facebook.com/mahmoud.elsieghaiar',
-                      ),
-                      'Facebook',
-                    ),
+                    
                     _buildSocialButton(
                       FontAwesomeIcons.whatsapp,
                       () => _launchUrl('https://wa.me/+201019593092'),

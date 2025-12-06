@@ -131,7 +131,7 @@ class AboutPage extends StatelessWidget {
                 name: 'Mahmoud El-Soghayar',
                 role: 'Full Stack Developer',
                 avatar: 'ME',
-                bio: 'مهندس برمجيات متخصص في تطوير تطبيقات Flutter',
+                bio: 'Web & Mobile Developer with a passion for clean code',
                 socialLinks: [
                   {
                     'icon': FontAwesomeIcons.github,
@@ -140,8 +140,24 @@ class AboutPage extends StatelessWidget {
                   },
                   {
                     'icon': FontAwesomeIcons.linkedin,
-                    'url': 'https://linkedin.com/in/soghayarmahmoud',
+                    'url': 'https://www.linkedin.com/in/mahmoud-el-soghayar-1847a5234/',
                     'color': const Color(0xFF0A66C2),
+                  },
+                  {
+                    'icon': FontAwesomeIcons.facebook,
+                    'url': 'https://www.facebook.com/mahmoud.elsieghaiar',
+                    'color': const Color.fromARGB(255, 10, 68, 194),
+                  },
+                   {
+                    'icon': FontAwesomeIcons.whatsapp,
+                    'url': 'https://wa.me/+201019593092',
+                    'color': const Color(0xFF0B8728),
+                  },
+                  
+                  {
+                    'icon': FontAwesomeIcons.youtube,
+                    'url': 'https://www.youtube.com/@procode4u/',
+                    'color': const Color.fromARGB(255, 194, 10, 28),
                   },
                 ],
                 primaryColor: primaryColor,
@@ -153,20 +169,31 @@ class AboutPage extends StatelessWidget {
               _buildDeveloperCard(
                 context,
                 name: 'Ahmed Mahmoud Mostafa',
-                role: 'UI/UX & Design',
+                role: 'Frontend Developer & UI/UX Designer ',
                 avatar: 'AM',
-                bio: 'مصمم واجهات مستخدم متخصص في التصميم الحديث',
+                bio: 'Passionate about crafting beautiful and user-friendly mobile experiences',
                 socialLinks: [
                   {
-                    'icon': FontAwesomeIcons.dribbble,
-                    'url': 'https://dribbble.com/ahmedmostafa',
-                    'color': const Color(0xFFEA4C89),
+                    'icon': FontAwesomeIcons.linkedin,
+                    'url': 'https://www.linkedin.com/in/ahmed-mahmoud-74983a31a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ',
+                    'color': const Color.fromARGB(255, 76, 142, 234),
                   },
                   {
-                    'icon': FontAwesomeIcons.instagram,
-                    'url': 'https://instagram.com/ahmedmostafa',
-                    'color': const Color(0xFFE1306C),
+                    'icon': FontAwesomeIcons.facebook,
+                    'url': 'https://www.facebook.com/ahmed.m.aboabbas',
+                    'color': const Color.fromRGBO(42, 120, 228, 1),
                   },
+                  {
+                    'icon': FontAwesomeIcons.github,
+                    'url': 'https://github.com/a7medma7moudmostafa',
+                    'color': const Color.fromRGBO(44, 42, 43, 0.89),
+                  },
+                  {
+                    'icon': FontAwesomeIcons.whatsapp,
+                    'url': 'https://wa.me/+201093358794',
+                    'color': const Color(0xFF0B8728),
+                  },
+                  
                 ],
                 primaryColor: primaryColor,
                 isDark: isDark,

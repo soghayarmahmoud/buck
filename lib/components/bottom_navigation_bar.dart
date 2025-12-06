@@ -4,7 +4,6 @@ import 'package:buck/pages/settings.dart';
 import 'package:buck/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
 
@@ -196,7 +195,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
             if (isSelected) ...[
               Text(
                 label,
-                style: GoogleFonts.cairo(
+                style: TextStyle(
+                  fontFamily: 'Cairo',
                   color: color,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
