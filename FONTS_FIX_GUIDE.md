@@ -29,16 +29,16 @@
 - 💾 احفظ: `Cairo-Regular.ttf` و `Cairo-Bold.ttf`
 
 #### **2. Tajawal Font**
-- 🔗 رابط: https://fonts.google.com/specimenTajawal/
+- 🔗 رابط: https://fonts.google.com/specimen/Tajawal
 - 💾 احفظ: `Tajawal-Regular.ttf` و `Tajawal-Bold.ttf`
 
 #### **3. Changa Font**
 - 🔗 رابط: https://fonts.google.com/specimen/Changa
 - 💾 احفظ: `Changa-Regular.ttf` و `Changa-Bold.ttf`
 
-#### **4. Droid Arabic Naskh Font**
-- 🔗 رابط: https://fonts.google.com/specimen/Droid+Arabic+Naskh
-- 💾 احفظ: `DroidArabicNaskh-Regular.ttf` و `DroidArabicNaskh-Bold.ttf`
+#### **4. PlaypenSansArabic Font** (جديد - بدل Droid)
+- 🔗 رابط: https://fonts.google.com/specimen/Playpen+Sans+Arabic
+- 💾 احفظ: `PlaypenSansArabic-Regular.ttf` و `PlaypenSansArabic-Bold.ttf`
 
 ---
 
@@ -54,8 +54,8 @@ buck/
         ├── Tajawal-Bold.ttf
         ├── Changa-Regular.ttf
         ├── Changa-Bold.ttf
-        ├── DroidArabicNaskh-Regular.ttf
-        └── DroidArabicNaskh-Bold.ttf
+        ├── PlaypenSansArabic-Regular.ttf
+        └── PlaypenSansArabic-Bold.ttf
 ```
 
 ✅ **تم بالفعل إنشاء المجلد:** `assets/fonts/` موجود في المشروع

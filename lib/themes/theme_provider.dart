@@ -140,8 +140,8 @@ class ThemeProvider extends ChangeNotifier {
         return const TextStyle(fontFamily: 'Tajawal');
       case 'changa':
         return const TextStyle(fontFamily: 'Changa');
-      case 'droid':
-        return const TextStyle(fontFamily: 'Droid');
+      case 'playpen':
+        return const TextStyle(fontFamily: 'PlaypenSansArabic');
       case 'cairo':
       default:
         return const TextStyle(fontFamily: 'Cairo');

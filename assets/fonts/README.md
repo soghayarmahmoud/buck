@@ -16,9 +16,9 @@ Download the following fonts from Google Fonts and place them in this directory:
    - Changa-Regular.ttf
    - Changa-Bold.ttf
 
-4. **Droid Arabic Naskh** - https://fonts.google.com/specimen/Droid+Arabic+Naskh
-   - DroidArabicNaskh-Regular.ttf
-   - DroidArabicNaskh-Bold.ttf
+4. **PlaypenSansArabic** - https://fonts.google.com/specimen/Playpen+Sans+Arabic
+   - PlaypenSansArabic-Regular.ttf
+   - PlaypenSansArabic-Bold.ttf
 
 ---
 

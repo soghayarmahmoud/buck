@@ -405,8 +405,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           _buildFontOption(
                             context,
-                            label: 'Droid',
-                            fontFamily: 'droid',
+                            label: 'PlaypenSansArabic',
+                            fontFamily: 'playpen',
                             themeProvider: themeProvider,
                           ),
                         ],

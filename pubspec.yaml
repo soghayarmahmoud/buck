@@ -96,10 +96,10 @@ flutter:
         - asset: assets/fonts/Changa-Regular.ttf
         - asset: assets/fonts/Changa-Bold.ttf
           weight: 700
-    - family: Droid
+    - family: PlaypenSansArabic
       fonts:
-        - asset: assets/fonts/DroidArabicNaskh-Regular.ttf
-        - asset: assets/fonts/DroidArabicNaskh-Bold.ttf
+        - asset: assets/fonts/PlaypenSansArabic-Regular.ttf
+        - asset: assets/fonts/PlaypenSansArabic-Bold.ttf
           weight: 700
   #
   # For details regarding fonts from package dependencies,

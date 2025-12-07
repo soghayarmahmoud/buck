@@ -9,51 +9,68 @@ class UsageService {
   // 🔹 جزء تتبع الأيام والستريك
   // ============================
 
-  // تسجيل فتح البرنامج
+  // تسجيل فتح البرنامج - محسّن للتوافق بين iOS و Android
   static Future<void> logToday() async {
     final prefs = await SharedPreferences.getInstance();
-    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    // استخدام تاريخ محلي موحد (بدون وقت)
+    final now = DateTime.now();
+    final today = DateFormat(
+      'yyyy-MM-dd',
+    ).format(DateTime(now.year, now.month, now.day));
+
     List<String> days = prefs.getStringList(key) ?? [];
 
     if (!days.contains(today)) {
       days.add(today);
-      prefs.setStringList(key, days);
+      await prefs.setStringList(key, days);
     }
 
     // Check if we need to reset streak (skip a day)
     await _checkAndUpdateStreakReset();
-  }
+  } // جلب كل الأيام
 
-  // جلب كل الأيام
   static Future<List<DateTime>> getAllDays() async {
     final prefs = await SharedPreferences.getInstance();
     List<String> days = prefs.getStringList(key) ?? [];
     return days.map((e) => DateTime.parse(e)).toList();
   }
 
-  // حساب الستريك (الأيام المتتالية)
+  // حساب الستريك (الأيام المتتالية) - محسّن للتوافق بين iOS و Android
   static Future<int> getStreak() async {
     final prefs = await SharedPreferences.getInstance();
     List<String> days = prefs.getStringList(key) ?? [];
     if (days.isEmpty) return 0;
 
-    List<DateTime> sortedDays = days.map((e) => DateTime.parse(e)).toList();
+    // تحويل إلى DateTime مع معالجة منطقة زمنية موحدة
+    List<DateTime> sortedDays = days.map((e) {
+      final parsed = DateTime.parse(e);
+      // تحويل إلى تاريخ محلي (بدون وقت) لضمان التوافق
+      return DateTime(parsed.year, parsed.month, parsed.day);
+    }).toList();
     sortedDays.sort((a, b) => b.compareTo(a)); // ترتيب تنازلي
 
     int streak = 1;
     DateTime lastDay = sortedDays.first;
 
-    // Check if today's date is in the list, if not, streak is broken
-    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    if (!days.contains(today)) {
-      // If yesterday is the last day, streak is still alive
-      final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      final yesterdayStr = DateFormat('yyyy-MM-dd').format(yesterday);
-      if (!days.contains(yesterdayStr)) {
+    // التحقق من تاريخ اليوم بنفس الطريقة
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    // التحقق من وجود اليوم في القائمة
+    bool hasToday = sortedDays.any((day) => day.isAtSameMomentAs(today));
+
+    if (!hasToday) {
+      // التحقق من وجود أمس
+      final yesterday = today.subtract(const Duration(days: 1));
+      bool hasYesterday = sortedDays.any(
+        (day) => day.isAtSameMomentAs(yesterday),
+      );
+      if (!hasYesterday) {
         return 0; // Streak is broken
       }
     }
 
+    // حساب الأيام المتتالية
     for (int i = 1; i < sortedDays.length; i++) {
       final dayDiff = lastDay.difference(sortedDays[i]).inDays;
       if (dayDiff == 1) {
@@ -65,13 +82,16 @@ class UsageService {
     }
 
     return streak;
-  }
+  } // التحقق من الحاجة لإعادة تعيين الستريك - محسّن للتوافق بين iOS و Android
 
-  // Check if we need to reset streak (when a day is skipped)
   static Future<void> _checkAndUpdateStreakReset() async {
     final prefs = await SharedPreferences.getInstance();
     final lastResetStr = prefs.getString(lastStreakResetKey);
-    final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    final now = DateTime.now();
+    final today = DateFormat(
+      'yyyy-MM-dd',
+    ).format(DateTime(now.year, now.month, now.day));
 
     if (lastResetStr == null) {
       // First time tracking
@@ -79,24 +99,37 @@ class UsageService {
       return;
     }
 
-    final lastResetDate = DateTime.parse(lastResetStr);
-    final todayDate = DateTime.parse(today);
-    final daysSinceLastReset = todayDate.difference(lastResetDate).inDays;
+    // التأكد من أن كلا التاريخين يستخدم نفس الصيغة
+    try {
+      final lastResetDate = DateTime.parse(lastResetStr);
+      final lastResetFormatted = DateFormat('yyyy-MM-dd').format(lastResetDate);
+      final todayDate = DateTime.parse(today);
+      final daysSinceLastReset = todayDate
+          .difference(DateTime.parse(lastResetFormatted))
+          .inDays;
 
-    // If more than 1 day has passed without opening the app, reset streak
-    if (daysSinceLastReset > 1) {
-      // Streak was broken, remove old days
-      List<String> days = prefs.getStringList(key) ?? [];
+      // If more than 1 day has passed without opening the app, reset streak
+      if (daysSinceLastReset > 1) {
+        // Streak was broken, remove old days
+        List<String> days = prefs.getStringList(key) ?? [];
 
-      // Keep only today and yesterday (if they exist)
-      final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      final yesterdayStr = DateFormat('yyyy-MM-dd').format(yesterday);
+        // Keep only today and yesterday (if they exist)
+        final yesterday = DateTime(
+          now.year,
+          now.month,
+          now.day,
+        ).subtract(const Duration(days: 1));
+        final yesterdayStr = DateFormat('yyyy-MM-dd').format(yesterday);
 
-      days.removeWhere((day) => day != today && day != yesterdayStr);
-      await prefs.setStringList(key, days);
+        days.removeWhere((day) => day != today && day != yesterdayStr);
+        await prefs.setStringList(key, days);
+      }
+
+      await prefs.setString(lastStreakResetKey, today);
+    } catch (e) {
+      // If there's any error with date parsing, reset the tracking
+      await prefs.setString(lastStreakResetKey, today);
     }
-
-    await prefs.setString(lastStreakResetKey, today);
   }
 
   static Future<void> saveDailySeconds(int seconds) async {

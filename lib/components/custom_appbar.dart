@@ -141,21 +141,66 @@ import 'package:buck/pages/settings.dart';
 import 'package:buck/pages/statistics_page.dart';
 import 'package:buck/pages/about_page.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
-  final TextEditingController? searchController;
-  final bool hasSearch;
+  final Function(String)? onSearch;
+  final VoidCallback? onSearchClosed;
 
   const CustomAppBar({
     super.key,
     required this.title,
-    this.searchController,
-    this.hasSearch = false,
+    this.onSearch,
+    this.onSearchClosed,
   });
 
   @override
-  Size get preferredSize =>
-      Size.fromHeight(kToolbarHeight + (hasSearch ? kToolbarHeight : 0));
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _widthAnimation;
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _widthAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _toggleSearch() {
+    if (_isSearching) {
+      _animationController.reverse();
+      _searchController.clear();
+      setState(() => _isSearching = false);
+      widget.onSearchClosed?.call();
+    } else {
+      _animationController.forward();
+      setState(() => _isSearching = true);
+    }
+  }
+
+  void _onSearchChanged(String value) {
+    widget.onSearch?.call(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,21 +209,45 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final primaryColor = themeProvider.primaryColor;
 
     return AppBar(
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-          color: Colors.white,
-          letterSpacing: 0.5,
-        ),
-        textDirection: TextDirection.rtl,
-      ),
+      title: _isSearching
+          ? _buildSearchField(themeProvider, primaryColor)
+          : Text(
+              widget.title,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.white,
+                letterSpacing: 0.5,
+              ),
+              textDirection: TextDirection.rtl,
+            ),
       backgroundColor: isDark ? const Color(0xFF1A2139) : primaryColor,
-      centerTitle: true,
+      centerTitle: !_isSearching,
       elevation: 8,
       shadowColor: primaryColor.withOpacity(0.3),
       actions: [
+        if (!_isSearching)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Tooltip(
+              message: 'بحث',
+              child: IconButton(
+                icon: Icon(Icons.search, color: Colors.white, size: 24),
+                onPressed: _toggleSearch,
+              ),
+            ),
+          ),
+        if (_isSearching)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Tooltip(
+              message: 'إغلاق',
+              child: IconButton(
+                icon: Icon(Icons.close, color: Colors.white, size: 24),
+                onPressed: _toggleSearch,
+              ),
+            ),
+          ),
         PopupMenuButton<String>(
           icon: Icon(Icons.menu, color: isDark ? primaryColor : Colors.black),
           onSelected: (String result) {
@@ -263,31 +332,44 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       ],
-      bottom: hasSearch
-          ? PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: TextField(
-                  controller: searchController,
-                  textDirection: TextDirection.rtl,
-                  decoration: InputDecoration(
-                    hintText: 'ابحث عن حديث...',
-                    prefixIcon: const Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).cardColor,
-                  ),
-                ),
+    );
+  }
+
+  Widget _buildSearchField(ThemeProvider themeProvider, Color primaryColor) {
+    return ScaleTransition(
+      scale: _widthAnimation,
+      child: FadeTransition(
+        opacity: _widthAnimation,
+        child: SizedBox(
+          height: kToolbarHeight,
+          child: TextField(
+            controller: _searchController,
+            textDirection: TextDirection.rtl,
+            textAlignVertical: TextAlignVertical.center,
+            onChanged: _onSearchChanged,
+            decoration: InputDecoration(
+              hintText: 'ابحث عن حديث...',
+              hintStyle: TextStyle(
+                color: Colors.white.withOpacity(0.6),
+                fontSize: 16,
               ),
-            )
-          : null,
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.white.withOpacity(0.7),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+            ),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+            cursorColor: Colors.white,
+          ),
+        ),
+      ),
     );
   }
 }

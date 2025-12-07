@@ -24,25 +24,25 @@ assets/fonts/
 ├── Tajawal-Bold.ttf
 ├── Changa-Regular.ttf
 ├── Changa-Bold.ttf
-├── DroidArabicNaskh-Regular.ttf
-└── DroidArabicNaskh-Bold.ttf
+├── PlaypenSansArabic-Regular.ttf
+└── PlaypenSansArabic-Bold.ttf
 ```
 
 ### 2. **مصادر تحميل الخطوط:**
 
 #### **Cairo Font** (خط صحيح وحديث):
-- من Google Fonts: https://fonts.google.com/metadata/icons
+- من Google Fonts: https://fonts.google.com/specimen/Cairo
 - ابحث عن "Cairo" ثم حمل الملفات
 
 #### **Tajawal Font** (خط عربي جميل):
-- من Google Fonts: https://fonts.google.com/?query=tajawal
+- من Google Fonts: https://fonts.google.com/specimen/Tajawal
 - اختر الإصدار العادي (Regular) والبولد (Bold)
 
 #### **Changa Font** (خط عربي مميز):
-- من Google Fonts: https://fonts.google.com/?query=changa
+- من Google Fonts: https://fonts.google.com/specimen/Changa
 
-#### **Droid Arabic Naskh** (خط تقليدي):
-- من Google Fonts: https://fonts.google.com/?query=droid
+#### **PlaypenSansArabic** (خط حديث وجميل):
+- من Google Fonts: https://fonts.google.com/specimen/Playpen+Sans+Arabic
 
 ### 3. **طريقة التحميل من Google Fonts:**
 
@@ -92,10 +92,10 @@ fonts:
       - asset: assets/fonts/Changa-Regular.ttf
       - asset: assets/fonts/Changa-Bold.ttf
         weight: 700
-  - family: Droid
+  - family: PlaypenSansArabic
     fonts:
-      - asset: assets/fonts/DroidArabicNaskh-Regular.ttf
-      - asset: assets/fonts/DroidArabicNaskh-Bold.ttf
+      - asset: assets/fonts/PlaypenSansArabic-Regular.ttf
+      - asset: assets/fonts/PlaypenSansArabic-Bold.ttf
         weight: 700
 ```
 
@@ -161,7 +161,7 @@ flutter run --release
 1. **Cairo** - خط عربي حديث وجميل (الافتراضي)
 2. **Tajawal** - خط عربي نظيف وواضح
 3. **Changa** - خط عربي مميز وفريد
-4. **Droid Arabic** - خط تقليدي ومحترف
+4. **PlaypenSansArabic** - خط حديث وجميل وعملي
 
 كل خط لديه نسختان:
 - **Regular** - الوزن الطبيعي
