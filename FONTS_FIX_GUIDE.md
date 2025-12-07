@@ -29,7 +29,7 @@
 - 💾 احفظ: `Cairo-Regular.ttf` و `Cairo-Bold.ttf`
 
 #### **2. Tajawal Font**
-- 🔗 رابط: https://fonts.google.com/specimen/Tajawal
+- 🔗 رابط: https://fonts.google.com/specimenTajawal/
 - 💾 احفظ: `Tajawal-Regular.ttf` و `Tajawal-Bold.ttf`
 
 #### **3. Changa Font**
