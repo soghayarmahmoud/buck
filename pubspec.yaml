@@ -101,6 +101,11 @@ flutter:
         - asset: assets/fonts/PlaypenSansArabic-Regular.ttf
         - asset: assets/fonts/PlaypenSansArabic-Bold.ttf
           weight: 700
+    - family: ArefRuqaa
+      fonts:
+        - asset: assets/fonts/ArefRuqaa-Regular.ttf
+        - asset: assets/fonts/ArefRuqaa-Bold.ttf
+          weight: 700
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

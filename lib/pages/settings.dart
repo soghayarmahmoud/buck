@@ -409,6 +409,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             fontFamily: 'playpen',
                             themeProvider: themeProvider,
                           ),
+                          _buildFontOption(
+                            context,
+                            label: 'ArefRuqaa',
+                            fontFamily: 'arefruqaa',
+                            themeProvider: themeProvider,
+                          ),
                         ],
                       ),
                     ],
@@ -615,7 +621,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    
                     _buildSocialButton(
                       FontAwesomeIcons.whatsapp,
                       () => _launchUrl('https://wa.me/+201019593092'),

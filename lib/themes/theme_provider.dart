@@ -13,7 +13,8 @@ class ThemeProvider extends ChangeNotifier {
       'teal'; // teal, blue, purple, green, orange, red, pink
 
   // Font customization
-  String _selectedFontFamily = 'cairo'; // cairo, tajawal, changa, droid, system
+  String _selectedFontFamily =
+      'cairo'; // cairo, tajawal, changa, playpen, arefruqaa, system
 
   bool _isBold = false;
   bool _isItalic = false;
@@ -142,6 +143,8 @@ class ThemeProvider extends ChangeNotifier {
         return const TextStyle(fontFamily: 'Changa');
       case 'playpen':
         return const TextStyle(fontFamily: 'PlaypenSansArabic');
+      case 'arefruqaa':
+        return const TextStyle(fontFamily: 'ArefRuqaa');
       case 'cairo':
       default:
         return const TextStyle(fontFamily: 'Cairo');
